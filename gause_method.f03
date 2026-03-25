@@ -5,20 +5,20 @@ module gause_method
 
     contains
 
-        ! Обнуляем элементы на главной диагонали
+        ! Обнуляем элементы на главной диагонали (простой способ)
         function forward_easy(size_matrix, matrix) result(mt)
             integer, intent(in) :: size_matrix
             real, intent(in) :: matrix(:, :)    
             integer :: i, j
-            real, allocatable :: factor, mt(:, :)
+            real :: mt(size_matrix, size_matrix + 1), factor
         
-            allocate(mt(size_matrix + 1, size_matrix))
             mt = matrix
 
-            do i = 1, size_matrix - 1
-                do j = i + 1, size_matrix
-                    factor = mt(i, j) / mt(i, i)
-                    mt(:, j) = mt(:, j) - (factor * mt(:, i))
+            do j = 1, size_matrix - 1
+                do i = j + 1, size_matrix
+                    factor = mt(i, j) / mt(j, j)
+                    mt(i, j + 1:) = mt(i, j + 1:) - (factor * mt(j, j + 1:))
+                    mt(i, j) = 0.0
                 end do
             end do
         end function forward_easy
@@ -28,18 +28,16 @@ module gause_method
             integer, intent(in) :: size_matrix
             real, intent(in) :: mt(:, :)
             integer :: i, j
-            real, allocatable :: answers (:)
-
-            allocate(answers(size_matrix))
-            answers(size_matrix) = mt(size_matrix + 1, size_matrix) / mt(size_matrix, size_matrix)
-
-            do i = size_matrix - 1, 1
-                answers(i) = mt(size_matrix, i)
-                do j = i + 1, size_matrix
-                    answers(i) = answers(i) / mt(i, j)
-                end do 
-            end do
+            real :: answers(size_matrix), summ
             
+            answers(size_matrix) = mt(size_matrix, size_matrix + 1) / mt(size_matrix, size_matrix)
 
+            do j = size_matrix - 1, 1, -1
+                summ = 0.0
+                do i = size_matrix, j + 1, -1
+                    summ = summ + mt(j, i) * answers(i)
+                end do 
+                answers(j) = (mt(j, size_matrix + 1) - summ) / mt(j, j)
+            end do
         end function back_substituion
 end module gause_method

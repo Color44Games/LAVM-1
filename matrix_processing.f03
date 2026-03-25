@@ -11,9 +11,9 @@ contains
         integer :: size_matrix
 
         size_matrix = size(matrix_rp)
-        allocate(matrix(size_matrix + 1, size_matrix))
+        allocate(matrix(size_matrix, size_matrix + 1))
 
-        matrix(1:size_matrix, :) = matrix_a
-        matrix(size_matrix + 1, :) = matrix_rp(1, 1:size_matrix)
+        matrix(:, 1:size_matrix) = matrix_a
+        matrix(:, size_matrix + 1) = matrix_rp(1:size_matrix, 1)
     end function connect_matrix
 end module matrix_processing
