@@ -23,6 +23,7 @@ module gause_method
             end do
         end function forward_easy
 
+        !Обнуляем элементы на главной диагонали (частичный выбор)
         function forward_choose(size_matrix, matrix) result(mt)
             integer, intent(in) :: size_matrix
             real, intent(in) :: matrix(:, :)
@@ -36,7 +37,7 @@ module gause_method
                 pivot = maxloc(abs(mt(j:size_matrix, j)))
                 pivot_ind= pivot(1) + j - 1
 
-                if(pivot_ind /= j) then
+                if (pivot_ind /= j) then
                     allocate(temp_row(size_matrix + 2 - j))
                     temp_row = mt(j, j:size_matrix + 1)
                     mt(j, j:size_matrix + 1) = mt(pivot_ind, j:size_matrix + 1)
