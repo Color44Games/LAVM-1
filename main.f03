@@ -10,6 +10,7 @@ program main
     real, allocatable :: mt_easy(:, :), answers_easy(:), mt_choose(:, :), answers_choose(:)
     real, allocatable :: vec_y(:), answers_lu(:)
     real(8) :: time_easy, time_choose, time_lu_decomposition, time_lu_solve, time_lu
+    real :: ds
     integer :: x, i, seed_matrix, seed_right_part, sz
     type(matrix_pair) :: lu_matrix
 
@@ -74,13 +75,14 @@ program main
     time_lu_decomposition = time_count_fortran(wrap_lu_decomposition)
     time_lu_solve = time_count_fortran(wrap_lu_solve)
     time_lu = time_count_fortran(wrap_lu)
+    ds = discrepancy(matrix_base, answers_lu, right_part(:, 1))
 
     print *, "Легкий способ: ", time_easy
     print *, "Частичный выбор: ", time_choose
     print *, "Разложение LU: ", time_lu_decomposition
     print *, "Решение треугольной системы: ", time_lu_solve
     print *, "Решение LU: ",time_lu
-
+    print *, ds
 
 end program main
 
