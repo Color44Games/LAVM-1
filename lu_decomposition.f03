@@ -1,13 +1,12 @@
 module lu_decomposition
     implicit none
     private
-    public matrix_pair, divide_matrix, forward_substitution
+    public matrix_pair, divide_matrix, forward_lu
 
     type :: matrix_pair
         real, allocatable :: mt_l(:, :)
         real, allocatable :: mt_u(:, :)
     end type matrix_pair
-
 contains
 
     ! Раскладываем исходнюу матрицу на L и U -матрицы
@@ -45,7 +44,7 @@ contains
     end function divide_matrix
 
     ! Вычисляем вектор y для уравнения Ly = b
-    function forward_substitution(size_matrix, mt_l) result(vec_y)
+    function forward_lu(size_matrix, mt_l) result(vec_y)
         integer, intent(in) :: size_matrix
         real :: mt_l(:, :)
         integer :: i, j
@@ -60,5 +59,5 @@ contains
                 mt_l(i, size_matrix + 1) = vec_y(i)
             end do
         end do
-    end function forward_substitution
+    end function forward_lu
 end module lu_decomposition
