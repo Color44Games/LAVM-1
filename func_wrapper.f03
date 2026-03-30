@@ -1,6 +1,7 @@
 module wrap_function
     use gause_method
     use lu_decomposition
+    use matrix_processing
     implicit none
 
     ! Данные для измерения времени
@@ -35,11 +36,4 @@ contains
         res_arr = forward_lu(sz_measure, mt_l_measure)
         res_arr = back_substituion(sz_measure, mt_u_measure)
     end subroutine wrap_lu_solve
-
-    ! Обертка для решения LU методом
-    subroutine wrap_lu()
-        res_mt_pair = divide_matrix(sz_measure, mt_base_measure)
-        res_arr = forward_lu(sz_measure, mt_l_measure)
-        res_arr = back_substituion(sz_measure, mt_u_measure)
-    end subroutine wrap_lu
 end module wrap_function
