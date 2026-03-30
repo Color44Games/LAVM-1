@@ -1,7 +1,6 @@
 module wrap_function
     use gause_method
     use lu_decomposition
-    use matrix_processing
     implicit none
 
     ! Данные для измерения времени
