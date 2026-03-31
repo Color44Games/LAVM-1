@@ -47,10 +47,12 @@ program main
             matrix_base = create_matrix(seed_matrix, sz)
             lu_matrix = divide_matrix(sz, matrix_base)
 
-            print *, "Ваша матрица"
-            do i = 1, sz
-                print *, matrix_base(i, :)
-            end do
+            if (sz < 100) then
+                print *, "Ваша матрица"
+                do i = 1, sz
+                    print *, matrix_base(i, :)
+                end do
+            end if
         case (4)
             if (allocated(matrix_base)) then
                 print *, "Матрица L"
